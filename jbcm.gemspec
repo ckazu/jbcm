@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["ckazuyuki@gmail.com"]
   spec.summary       = "Jenkins job's build command manager"
   spec.description   = ""
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/ckazu/jbcm"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
