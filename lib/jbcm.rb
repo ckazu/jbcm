@@ -56,7 +56,7 @@ module Jbcm
         config.project.builders.send('hudson.tasks.Shell').command.nodes
       end
 
-      def build_commnad=(build_command)
+      def build_command=(build_command)
         config.project.builders.send('hudson.tasks.Shell').command.nodes.pop
         config.project.builders.send('hudson.tasks.Shell').command.nodes.push(build_command)
       end
