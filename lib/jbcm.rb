@@ -1,7 +1,7 @@
 require 'jbcm/version'
 require 'faraday'
 require 'json'
-require 'ox'
+require 'rexml/document'
 
 module Jbcm
   class Client
@@ -49,23 +49,22 @@ module Jbcm
       end
 
       def config
-        @config ||= Ox.parse(cli.conn.get("job/#{job_name}/config.xml").body)
+        @config ||= REXML::Document.new(cli.conn.get("job/#{job_name}/config.xml").body)
       end
 
       def build_command
-        config.project.builders.send('hudson.tasks.Shell').command.nodes
+        config.elements['project/builders/hudson.tasks.Shell/command'].text
       end
 
       def build_command=(build_command)
-        config.project.builders.send('hudson.tasks.Shell').command.nodes.pop
-        config.project.builders.send('hudson.tasks.Shell').command.nodes.push(build_command)
+        config.elements['project/builders/hudson.tasks.Shell/command'].text = build_command
       end
 
       def update
         cli.conn.post do |req|
           req.url "job/#{job_name}/config.xml"
           req.headers['Content-Type'] = 'application/xml'
-          req.body = Ox.dump(config)
+          req.body = config.to_s
         end
       end
 
